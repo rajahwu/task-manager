@@ -4,12 +4,16 @@ const express = require('express');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session)
-const options = {
+const MySQLStore = require('express-mysql-session')(session);
+const pgSession = require('connect-pg-simple')(session);
+const isProduciton = process.env.NODE_ENV === 'production';
+
+
+const options = isProduciton ? {} : {
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'Eric@123',
+    password: process.env.MYSQL_PW,
     database: 'task_manager'
 }
 
@@ -19,36 +23,39 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const sessionStore = new MySQLStore(options);
+const sessionStore = isProduciton ?
+    new pgSession({
+        conString: `postgresql://postgres:${process.env.POSTGRES_PW}@db.solredhrdykcytemkldu.supabase.co:5432/postgres`,
+    }) :
+    new MySQLStore(options);
 
 sessionStore.onReady().then(() => {
     // MySQL session store ready for use.
-    console.log('MySQLStore ready');
+    console.log(!isProduciton ? 'MySQLStore ready' : 'Postgres Store ready');
 }).catch(error => {
     // Something went wrong.
     console.error(error);
 });
 
-app.use(session({
-    key: 'session_cookie_name',
-    secret: 'session_cookie_secret',
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false
-}));
+if (isProduciton) {
+    app.use(session({
+        key: 'session_cookie_name',
+        secret: 'session_cookie_secret',
+        store: sessionStore,
+        resave: false,
+        saveUninitialized: false
+        // Other session configuration options
+    }));
+} else {
+    app.use(session({
+        key: 'session_cookie_name',
+        secret: 'session_cookie_secret',
+        store: sessionStore,
+        resave: false,
+        saveUninitialized: false
+    }));
 
-// app.use(session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: {
-//         httpOnly: false,
-//         secure: false,
-//         maxAge: 1000 * 60 * 60 * 24 * 3,
-//         expires: 1000 * 60 * 60 * 24 * 3
-//     },
-//     store: new MySQLStore(options)
-// }));
+}
 
 app.use(passport.initialize());
 app.use(passport.session());
