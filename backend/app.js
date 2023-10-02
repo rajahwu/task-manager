@@ -99,8 +99,8 @@ app.use(cookieParser());
 
 app.use(passport.authenticate('session'));
 
-app.use('/auth/login', authLoginRoutes);
 app.use('/auth/register', authRegistrationRoutes);
+app.use('/auth', authLoginRoutes);
 app.use('/', indexRoutes);
 
 
