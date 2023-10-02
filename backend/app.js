@@ -6,8 +6,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const pgSession = require('connect-pg-simple')(session);
-const isProduciton = process.env.NODE_ENV === 'production';
+const environment = process.env.NODE_ENV;
+const isProduciton = environment.trim() === 'production';
 
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log("{ isProduction ", isProduciton, " }, { environment ", environment, " }" );
 
 const options = isProduciton ? {} : {
     host: 'localhost',
@@ -29,7 +32,8 @@ const sessionStore = isProduciton ?
     }) :
     new MySQLStore(options);
 
-sessionStore.onReady().then(() => {
+
+!isProduciton ?? sessionStore.onReady().then(() => {
     // MySQL session store ready for use.
     console.log(!isProduciton ? 'MySQLStore ready' : 'Postgres Store ready');
 }).catch(error => {

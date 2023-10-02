@@ -1,1 +1,5 @@
 tree -I node_modules -L 3
+docker build -t task-manager-backend .
+docker run -d --name task-manager-backend task-manager-backend:latest
+docker rm task-manager-backend
+docker stop <CONTAINER ID>
