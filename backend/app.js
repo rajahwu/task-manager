@@ -7,7 +7,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const pgSession = require('connect-pg-simple')(session);
 const environment = process.env.NODE_ENV;
-const isProduciton = environment.trim() === 'production';
+const isProduciton = environment === 'production';
 
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log("{ isProduction ", isProduciton, " }, { environment ", environment, " }" );
@@ -102,6 +102,7 @@ passport.deserializeUser(async (id, done) => {
 const authLoginRoutes = require('./routes/auth/login');
 const authRegistrationRoutes = require('./routes/auth/register');
 const indexRoutes = require('./routes/index');
+const dashboardRoutes = require('./routes/api/dashboard');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -110,9 +111,10 @@ app.use(cookieParser());
 
 app.use(passport.authenticate('session'));
 
-app.use('/auth/register', authRegistrationRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/auth', authRegistrationRoutes);
 app.use('/auth', authLoginRoutes);
-app.use('/', indexRoutes);
+app.use('/api', indexRoutes);
 
 
 // catch 404 and forward to error handler
