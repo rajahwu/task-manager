@@ -5,7 +5,7 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get('/login', (req, res) => {
-    // Render your login form
+    res.json({ page: 'login' })
 });
 
 router.post('/login', passport.authenticate('local', {

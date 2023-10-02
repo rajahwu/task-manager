@@ -7,6 +7,7 @@ const User = require('../../db/models/user'); // Import your user model
 
 router.get('/register', (req, res) => {
   // Render your registration form
+  res.json({ page: 'registration' })
 });
 
 router.post('/register', async (req, res) => {
