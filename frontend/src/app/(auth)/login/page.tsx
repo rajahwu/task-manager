@@ -10,12 +10,11 @@ async function getData() {
   return res.json();
 }
 
-
 export default async function LoginPage() {
-    const { page } = await getData();
+  const { page } = await getData();
   return (
     <div>
-      <h1>{ page }</h1>
+      <h1>{page}</h1>
       <Link href="/dashboard">back to Dashboard</Link>
       <LoginForm />
     </div>
