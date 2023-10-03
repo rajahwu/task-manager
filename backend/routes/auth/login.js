@@ -12,7 +12,8 @@ router.post(
   "/login",
   // passport.authenticate('local'),
   (req, res) => {
-    res.json(res.body);
+    console.log('res.body->', req.body)
+    res.json({response: req.body});
   }
 );
 

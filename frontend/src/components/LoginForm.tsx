@@ -5,11 +5,10 @@ interface UserForm {
   username: String;
   email: String;
   password: String;
-  confirm: String;
 }
 
 const handleSubmit = async (formdata: UserForm) => {
-  // console.log(formdata);
+  console.log('formdata: ', formdata);
   fetch("http://localhost:8000/auth/login", {
     method: "POST",
     headers: {
@@ -29,6 +28,7 @@ const handleSubmit = async (formdata: UserForm) => {
     .catch((error) => {
       console.error("There is a problem submiting login", error);
     });
+    
   return formdata;
 };
 
@@ -52,11 +52,10 @@ export default function LoginForm() {
         username,
         email,
         password,
-        confirm,
       });
 
       // Handle successful submission
-      console.log(response); // Log the response from the server
+      console.log('response: ', response); // Log the response from the server
       setFormSubmitted(true);
       setError(null);
       setUsername("");
@@ -73,10 +72,42 @@ export default function LoginForm() {
   return (
     <div>
       {formSubmitted ? (
+        <>
         <p>Form submitted successfully!</p>
+        <pre>
+
+        </pre>
+          </>
       ) : (
         <form onSubmit={handleFormSubmit}>
-          {/* ... (input fields and labels) */}
+          <label htmlFor="username">username</label>
+          <input
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+          />
+          <label htmlFor="email">email</label>
+          <input
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+          />
+          <label htmlFor="password">password</label>
+          <input
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="text"
+          />
+          <label htmlFor="confirm">confirm</label>
+          <input
+            id="confirm"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            type="text"
+          />
           {error && <p className="error">{error}</p>}
           <button type="submit">Submit</button>
         </form>

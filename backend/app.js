@@ -9,8 +9,10 @@ const pgSession = require('connect-pg-simple')(session);
 const environment = process.env.NODE_ENV ?? 'development';
 const isProduciton = environment === 'production';
 
+const { User } = require('./db/models/user');
+
 console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log("{ isProduction ", isProduciton, " }, { environment ", environment, " }" );
+console.log("{ isProduction ", isProduciton, " }, { environment ", environment, " }");
 
 const options = isProduciton ? {} : {
     host: 'localhost',
@@ -28,8 +30,8 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
-  });
-  
+});
+
 
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
@@ -72,6 +74,7 @@ if (isProduciton) {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 passport.use(new LocalStrategy(
     async (username, password, done) => {
