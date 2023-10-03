@@ -13,9 +13,11 @@ async function getData() {
 export default async function LoginPage() {
   const { page } = await getData();
   return (
-    <div>
-      <h1>{page}</h1>
-      <Link href="/dashboard">back to Dashboard</Link>
+    <div className="w-full max-w-xs">
+      <Link className="btn btn-ghost"  href="/dashboard">back to Dashboard</Link>
+      <div className="navbar bg-base-100">
+        <h1 className="capitalize text-xl">{page}</h1>
+      </div>
       <LoginForm />
     </div>
   );
