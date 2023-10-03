@@ -4,3 +4,6 @@ docker run -d --name task-manager-backend task-manager-backend:latest
 docker rm task-manager-backend
 docker stop <CONTAINER ID>
 docker logs <CONTAINER ID>
+
+npx dotenv sequelize db:migrate:undo:all
+npx dotenv sequelize db:migrate

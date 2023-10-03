@@ -9,6 +9,12 @@ const pgSession = require('connect-pg-simple')(session);
 const environment = process.env.NODE_ENV ?? 'development';
 const isProduciton = environment === 'production';
 
+const createError = require('http-errors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+
+
 const { User } = require('./db/models/user');
 
 console.log('NODE_ENV:', process.env.NODE_ENV);
@@ -31,11 +37,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-
-
-const createError = require('http-errors');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 
 const sessionStore = isProduciton ?
     new pgSession({
@@ -120,6 +121,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.authenticate('session'));
 
