@@ -19,4 +19,4 @@ RUN echo 'NODE_ENV=production' >> /app/.env
 EXPOSE 8080
 
 # Command to start the Express.js application
-CMD ["npm", "start"]
+CMD ["npm", "run", "migrate"]

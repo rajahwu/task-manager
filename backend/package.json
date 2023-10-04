@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "migrate": "npx dotenv sequelize-cli db:migrate && npm start"
   },
   "keywords": [],
   "author": "",

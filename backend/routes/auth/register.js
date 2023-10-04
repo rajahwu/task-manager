@@ -21,7 +21,6 @@ router.post('/register', async (req, res) => {
       email: req.body.email,
       hashedPassword: req.body.password, 
     });
-    console.log("newUser", newUser)
     if(!newUser) return new Error('unable to create new user');
     // Log in the newly registered user
     // req.login(newUser, (err) => {
