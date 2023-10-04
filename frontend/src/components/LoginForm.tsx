@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 
 interface UserForm {
   username: String;
@@ -40,7 +40,7 @@ export default function LoginForm() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null); // Updated the type
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirm) {
       setError("Passwords do not match.");
